@@ -44,6 +44,17 @@ const modifyPackageJson = (filePath, callback) => {
   fs.writeFileSync(filePath, JSON.stringify(packageJson, null, 2));
 };
 
+const modifyMetadataFile = (metadataFilePath, implementationCode) => {
+  if (fs.existsSync(metadataFilePath)) {
+    const metadata = fs.readFileSync(metadataFilePath, 'utf8');
+    const updatedMetadata = metadata.replace(
+      /version:.*/,
+      (match) => `${match}-${implementationCode}`
+    );
+    fs.writeFileSync(metadataFilePath, updatedMetadata, 'utf8');
+  }
+};
+
 const main = () => {
   const { target, options } = parseArguments();
   if (!target) process.exit(1);
@@ -55,7 +66,7 @@ const main = () => {
   try {
     modifyPackageJson(packageJsonPath, (packageJson) => {
       delete packageJson.dependencies.electron;
-      packageJson.version = "v".concat(packageJson.version)
+      packageJson.version = "v".concat(packageJson.version);
       const targetConfig = packageJson.build[target];
       if (targetConfig && targetConfig.artifactName) {
         targetConfig.artifactName = targetConfig.artifactName.replace('${implementationCode}', implementationCode);
@@ -65,6 +76,10 @@ const main = () => {
     });
 
     runCommand(`electron-builder --${target}`);
+
+    // Add implementationCode to metadata files
+    const metadataFilePath = path.resolve(__dirname, '../../dist/latest.yml');
+    modifyMetadataFile(metadataFilePath, implementationCode);
   } finally {
     fs.copyFileSync(tempPackageJsonPath, packageJsonPath);
     fs.unlinkSync(tempPackageJsonPath);
