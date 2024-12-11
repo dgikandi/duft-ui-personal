@@ -204,7 +204,6 @@
       "artifactName": "${productName}-${version}-${arch}-${implementationCode}.${ext}"
     },
     "linux": {
-      "icon": "./duft_icon.png",
       "category": "Science",
       "target": [
         "deb",
