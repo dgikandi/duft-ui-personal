@@ -64,7 +64,7 @@ const main = () => {
       }
     });
 
-    runCommand(`electron-builder --${target} --force`);
+    runCommand(`electron-builder --${target}`);
   } finally {
     fs.copyFileSync(tempPackageJsonPath, packageJsonPath);
     fs.unlinkSync(tempPackageJsonPath);
