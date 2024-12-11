@@ -55,20 +55,16 @@ const main = () => {
   try {
     modifyPackageJson(packageJsonPath, (packageJson) => {
       delete packageJson.dependencies.electron;
-
-      // Prefix the version with "v"
-      packageJson.version = `v${packageJson.version}`;
-
-      // Update artifactName to include version and implementationCode
+      packageJson.version = "v".concat(packageJson.version)
       const targetConfig = packageJson.build[target];
       if (targetConfig && targetConfig.artifactName) {
-        targetConfig.artifactName = `${packageJson.name}-${packageJson.version}-${implementationCode}.${target}`;
+        targetConfig.artifactName = targetConfig.artifactName.replace('${implementationCode}', implementationCode);
       } else {
         process.exit(1);
       }
     });
 
-    runCommand(`electron-builder --${target}`);
+    runCommand(`electron-builder --${target} --force`);
   } finally {
     fs.copyFileSync(tempPackageJsonPath, packageJsonPath);
     fs.unlinkSync(tempPackageJsonPath);
