@@ -94,16 +94,11 @@ jobs:
       - name: Publish new metadata asset file to release
         working-directory: main
         run: |
-          if [ -f "dist/latest-linux.yml" ]; then
-            mv dist/latest-linux.yml dist/latest-linux-${{ matrix.config.code }}.yml
-            gh release upload ${{ env.TAG_NAME }} dist/latest-linux-${{ matrix.config.code }}.yml --clobber
-            echo "latest-linux-${{ matrix.config.code }}.yml uploaded"
-          else
-            echo "File dist/latest-linux.yml does not exist, skipping mv and upload."
-          fi
+          mv dist/latest-linux.yml dist/latest-linux-${{ matrix.config.code }}.yml
+          gh release upload ${{ env.TAG_NAME }} dist/latest-linux-${{ matrix.config.code }}.yml --clobber
+          echo "latest-mac-${{ matrix.config.code }}.yml uploaded"
         env:
           GH_TOKEN: ${{ secrets.DUFT_PUBLISH_TOKEN }}
-        
 
   build-windows-executables:
     needs: generate-implementations-matrix
@@ -273,12 +268,8 @@ jobs:
       - name: Publish new metadata asset file to release
         working-directory: main
         run: |
-          if [ -f "dist/latest-mac.yml" ]; then
-            mv dist/latest-mac.yml dist/latest-mac-${{ matrix.config.code }}.yml
-            gh release upload ${{ env.TAG_NAME }} dist/latest-mac-${{ matrix.config.code }}.yml --clobber
-            echo "latest-mac-${{ matrix.config.code }}.yml uploaded"
-          else
-            echo "File dist/latest-mac.yml does not exist, skipping mv and upload."
-          fi
+          mv dist/latest-mac.yml dist/latest-mac-${{ matrix.config.code }}.yml
+          gh release upload ${{ env.TAG_NAME }} dist/latest-mac-${{ matrix.config.code }}.yml --clobber
+          echo "latest-mac-${{ matrix.config.code }}.yml uploaded"
         env:
           GH_TOKEN: ${{ secrets.DUFT_PUBLISH_TOKEN }}
