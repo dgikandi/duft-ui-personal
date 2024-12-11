@@ -195,24 +195,7 @@
         {
           "target": "nsis",
           "arch": [
-            "ia32"
-          ]
-        },
-        {
-          "target": "nsis",
-          "arch": [
-            "x64"
-          ]
-        },
-        {
-          "target": "msi",
-          "arch": [
-            "ia32"
-          ]
-        },
-        {
-          "target": "msi",
-          "arch": [
+            "ia32",
             "x64"
           ]
         }
@@ -221,7 +204,6 @@
       "artifactName": "${productName}-${version}-${arch}-${implementationCode}.${ext}"
     },
     "linux": {
-      "icon": "./duft_icon.png",
       "category": "Science",
       "target": [
         "deb",
