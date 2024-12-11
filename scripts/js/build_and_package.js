@@ -55,10 +55,14 @@ const main = () => {
   try {
     modifyPackageJson(packageJsonPath, (packageJson) => {
       delete packageJson.dependencies.electron;
-      packageJson.version = "v".concat(packageJson.version)
+
+      // Prefix the version with "v"
+      packageJson.version = `v${packageJson.version}`;
+
+      // Update artifactName to include version and implementationCode
       const targetConfig = packageJson.build[target];
       if (targetConfig && targetConfig.artifactName) {
-        targetConfig.artifactName = targetConfig.artifactName.replace('${implementationCode}', implementationCode);
+        targetConfig.artifactName = `${packageJson.name}-${packageJson.version}-${implementationCode}.${target}`;
       } else {
         process.exit(1);
       }
